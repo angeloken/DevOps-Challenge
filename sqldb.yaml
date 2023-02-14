@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vol2
+  namespace: dev
+  labels:
+    app: sosmed
+spec:
+  accessModes:
+    - ReadWriteOnce  #ini artinya misal kita replica pod nya 3 cuma 1 yg connect, duanya bakal pending statusnya kalau mau semua rwmany
+  storageClassName: storage-sqldb
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-db
+  namespace: dev
+  labels:
+    app: sosmed
+spec:
+  # modify replicas according to your case
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sosmed
+  template:
+    metadata:
+      labels:
+        app: sosmed
+    spec:
+      initContainers:
+      - name: sqldb
+        image: unsyncxed/example:mysqlTag
+        ports: 
+        - containerPort: 80
+        volumeMounts: 
+        - name: config-volume
+          mountPath: /data
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: vol2
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-rahasia
+type: Opaque
+stringData:
+  DB_HOST: mysqlkel2
+  DB_PASS: Admin123 
+  DB_USER: u01 
+  DB_NAME: kel2db
