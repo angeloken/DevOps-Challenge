@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pacebook
+  namespace: dev
+spec:
+  containers:
+  - name: pacebook
+    image: angeloken/test:latest
+    ports:
+    - containerPort: 80
