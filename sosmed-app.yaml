@@ -36,7 +36,7 @@ spec:
     spec:
       initContainers:
       - name: sosmed
-        image: unsyncxed/example:latest
+        image: angeloken/test:testws
         ports: 
         - containerPort: 80
         volumeMounts: 

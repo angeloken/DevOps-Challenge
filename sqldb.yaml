@@ -36,16 +36,21 @@ spec:
     spec:
       initContainers:
       - name: sqldb
-        image: unsyncxed/example:mysqlTag
+        image: angeloken/test:testsql
         ports: 
         - containerPort: 80
         volumeMounts: 
         - name: config-volume
           mountPath: /data
+        - name: config-secret
+          mountPath: /opt
       volumes:
       - name: config-volume
         persistentVolumeClaim:
           claimName: vol2
+      - name: config-secret
+        secret:
+          secretName: secret-rahasia
 
 ---
 apiVersion: v1
