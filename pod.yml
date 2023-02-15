@@ -6,6 +6,6 @@ metadata:
 spec:
   containers:
   - name: pacebook
-    image: angeloken/test:latest
+    image: angeloken/test:DOCKER_TAG
     ports:
     - containerPort: 80
