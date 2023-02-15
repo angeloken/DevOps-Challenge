@@ -28,6 +28,16 @@ spec:
             secretKeyRef:
               name: secret-rahasia
               key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: secret-rahasia
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-rahasia
+              key: MYSQL_USER
         - name: DB_HOST
           valueFrom:
             secretKeyRef:

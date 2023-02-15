@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sosmed-app-v2
+  name: sosmed-app
   namespace: dev
   labels:
     app: sosmed
@@ -19,7 +19,7 @@ spec:
         app: sosmed
     spec:
       containers:
-      - name: sosmed-app-v2
+      - name: sosmed-app
         image: angeloken/test:DOCKER_TAG
         ports: 
         - containerPort: 80
@@ -29,6 +29,16 @@ spec:
             secretKeyRef:
               name: secret-rahasia
               key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: secret-rahasia
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-rahasia
+              key: MYSQL_USER
         - name: DB_HOST
           valueFrom:
             secretKeyRef:
