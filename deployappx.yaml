@@ -1,37 +1,7 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata: 
-  name: pvol1
-spec:
-  storageClassName: storage-sosmed
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /data/pvol1
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: vol1
-  namespace: dev
-  labels:
-    app: sosmed
-spec:
-  accessModes:
-    - ReadWriteOnce  #ini artinya misal kita replica pod nya 3 cuma 1 yg connect, duanya bakal pending statusnya kalau mau semua rwmany
-  storageClassName: storage-sosmed
-  resources:
-    requests:
-      storage: 1Gi
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sosmed-app
+  name: sosmed-app-v2
   namespace: dev
   labels:
     app: sosmed
@@ -49,31 +19,7 @@ spec:
         app: sosmed
     spec:
       containers:
-      - name: sosmed
-        image: angeloken/test:testws
+      - name: sosmed-app-v2
+        image: angeloken/test:DOCKER_TAG
         ports: 
         - containerPort: 80
-        volumeMounts: 
-        - name: config-volume
-          mountPath: /data
-      volumes:
-      - name: config-volume
-        persistentVolumeClaim:
-          claimName: vol1
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc-sosmed
-  namespace: dev
-  labels:
-    app: sosmed
-spec:
-  type: NodePort
-  selector:
-    app: sosmed
-  ports:
-  - port: 80
-    targetPort: 80
-    nodePort: 30082
