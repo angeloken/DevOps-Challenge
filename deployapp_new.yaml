@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sosmed-app
+  namespace: dev
+  labels:
+    app: sosmed
+spec:
+  # modify replicas according to your case
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sosmed
+  template:
+    metadata:
+      labels:
+        app: sosmed
+    spec:
+      containers:
+      - name: sosmed-app
+        image: angeloken/test:DOCKER_TAG
+        ports: 
+        - containerPort: 80
+        envFrom:
+          - configMapRef:
+              name: configmap-sql
+          - secretRef:
+              name: secret-rahasia
