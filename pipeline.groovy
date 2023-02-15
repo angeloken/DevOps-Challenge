@@ -37,7 +37,8 @@ pipeline {
     }
     stage('Yaml Source') {
       steps {
-         sh 'git clone https://github.com/angeloken/DevOps-Challenge.git'
+         sh 'git remote add upstream https://github.com/angeloken/DevOps-Challenge.git'
+         sh 'git pull upstream main'
       }
     }
     stage('Deploy to Server') {
