@@ -1,13 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sosmed-app-v2
+  name: sql-db
   namespace: dev
   labels:
     app: sosmed
 spec:
-  # modify replicas according to your case
-  replicas: 5
+  replicas: 1
   strategy:
     type: RollingUpdate
   selector:
@@ -19,10 +18,10 @@ spec:
         app: sosmed
     spec:
       containers:
-      - name: sosmed-app-v2
-        image: angeloken/test:DOCKER_TAG
+      - name: sqldb
+        image: angeloken/test:testsql
         ports: 
-        - containerPort: 80
+        - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -49,3 +48,10 @@ spec:
             secretKeyRef:
               name: secret-rahasia
               key: DB_NAME
+        volumeMounts: 
+        - name: config-volume
+          mountPath: /data
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: vol1
