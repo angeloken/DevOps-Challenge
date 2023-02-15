@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata: 
+  name: pvolsql
+spec:
+  storageClassName: storage-sqldb
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/pvolsql
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vol2
+  namespace: dev
+  labels:
+    app: sosmed
+spec:
+  accessModes:
+    - ReadWriteOnce  
+  storageClassName: storage-sqldb
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-rahasia
+  namespace: dev
+data:
+  ENV: base64(VALUE)
+type: Opaque
+stringData:
+  DB_HOST: mysqlkel2
+  DB_PASS: Admin123 
+  DB_USER: u01 
+  DB_NAME: kel2db
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-db
+  namespace: dev
+  labels:
+    app: sosmed
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sosmed
+  template:
+    metadata:
+      labels:
+        app: sosmed
+    spec:
+      initContainers:
+      - name: sqldb
+        image: angeloken/test:testsql
+        ports: 
+        - containerPort: 80
+        volumeMounts: 
+        - name: config-volume
+          mountPath: /data
+        - name: config-secret
+          mountPath: /opt
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: vol2
+      - name: config-secret
+        secret:
+          secretName: secret-rahasia
+
+
