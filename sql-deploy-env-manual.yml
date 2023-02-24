@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-db
+  namespace: dev
+  labels:
+    app: sosmed
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sosmed
+  template:
+    metadata:
+      labels:
+        app: sosmed
+    spec:
+      containers:
+      - name: sqldb
+        image: angeloken/test:testsql
+        ports: 
+        - containerPort: 3306
+      env:
+        - name: DB_HOST
+          value: mysqlkel2
+        - name: DB_NAME
+          value: kel2db
+        - name: DB_PASS
+          value: Admin123
+        - name: DB_USER
+          value: u01
+        - name: MYSQL_ROOT_PASSWORD
+          value: Admin123
+        - name: MYSQL_DATABASE
+          value: kel2db
+        - name: MYSQL_USER
+          value: u01
+        - name: MYSQL_PASSWORD
+          value: Admin123

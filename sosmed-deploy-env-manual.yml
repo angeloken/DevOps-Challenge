@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sosmed-app
+  namespace: dev
+  labels:
+    app: sosmed
+spec:
+  # modify replicas according to your case
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sosmed
+  template:
+    metadata:
+      labels:
+        app: sosmed
+    spec:
+      containers:
+      - name: sosmed-app
+        image: angeloken/test:DOCKER_TAG
+        ports: 
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: mysqlkel2
+        - name: DB_NAME
+          value: kel2db
+        - name: DB_PASS
+          value: Admin123
+        - name: DB_USER
+          value: u01
+        - name: MYSQL_ROOT_PASSWORD
+          value: Admin123
+        - name: MYSQL_DATABASE
+          value: kel2db
+        - name: MYSQL_USER
+          value: u01
+        - name: MYSQL_PASSWORD
+          value: Admin123
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+          name: config-volume
+      volumes:
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: sosmed-volume-claim
