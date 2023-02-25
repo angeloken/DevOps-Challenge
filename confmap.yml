@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 data:
-  DB_HOST: mysqlkel2
+  DB_HOST: 10.101.139.242
   DB_NAME: kel2db
 metadata:
   name: cfgmap-sosmed

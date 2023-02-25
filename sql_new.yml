@@ -11,11 +11,11 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: sosmed
+      app: mysql
   template:
     metadata:
       labels:
-        app: sosmed
+        app: mysql
     spec:
       containers:
       - name: sqldb
@@ -24,13 +24,13 @@ spec:
         - containerPort: 3306
         envFrom:
           - configMapRef:
-              name: configmap-sql
+              name: cfgmap-sql
           - secretRef:
-              name: secret-rahasia
+              name: secret-sql
         volumeMounts: 
         - name: config-volume
-          mountPath: /data
+          mountPath: /var/lib/mysql
       volumes:
       - name: config-volume
         persistentVolumeClaim:
-          claimName: vol1
+          claimName: sosmed-volume-claim

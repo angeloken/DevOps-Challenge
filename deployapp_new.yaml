@@ -20,27 +20,11 @@ spec:
     spec:
       containers:
       - name: sosmed-app
-        image: angeloken/test:DOCKER_TAG
+        image: unsyncxed/example:latest
         ports: 
         - containerPort: 80
-        env:
-          - name: DB_PASS #pass secret
-            valueFrom:
-              secretKeyRef:
-                name: secret-rahasia
-                key: DB_PASS
-          - name: DB_USER #user secret
-            valueFrom:
-              secretKeyRef:
-                name: secret-rahasia
-                key: DB_USER
-          - name: DB_HOST #configmap
-            valueFrom:
-              configMapKeyRef:
-                name: configmap-sql
-                key: DB_HOST
-          - name: DB_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: configmap-sql
-                key: DB_NAME
+        envFrom:
+          - configMapRef:
+              name: cfgmap-sosmed
+          - secretRef:
+              name: secret-sosmed
