@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: sosmed-app
-        image: unsyncxed/example:latest
+        image: angeloken/latest:DOCKER_TAG
         ports: 
         - containerPort: 80
         envFrom:
