@@ -4,4 +4,15 @@ data:
   DB_HOST: mysqlkel2
   DB_NAME: kel2db
 metadata:
-  name: configmap-sql
+  name: cfgmap-sosmed
+  namespace: dev
+
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  MYSQL_DATABASE: kel2db
+  MYSQL_USER: u01
+metadata:
+  name: cfgmap-sql
+  namespace: dev

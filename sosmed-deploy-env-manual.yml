@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: sosmed-app
-        image: angeloken/test:DOCKER_TAG
+        image: unsyncxed/example:latest
         ports: 
         - containerPort: 80
         env:
@@ -32,18 +32,3 @@ spec:
           value: Admin123
         - name: DB_USER
           value: u01
-        - name: MYSQL_ROOT_PASSWORD
-          value: Admin123
-        - name: MYSQL_DATABASE
-          value: kel2db
-        - name: MYSQL_USER
-          value: u01
-        - name: MYSQL_PASSWORD
-          value: Admin123
-        volumeMounts:
-          - mountPath: /var/lib/mysql
-          name: config-volume
-      volumes:
-        - name: config-volume
-          persistentVolumeClaim:
-            claimName: sosmed-volume-claim
